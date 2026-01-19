@@ -1,0 +1,36 @@
+# Example wigg Configuration
+# This file is created by running: wigg init
+# Location: .wigg/config.yaml
+
+project:
+  name: "my-awesome-project"
+  language: "TypeScript"
+  framework: "Next.js"  # Optional: React, Vue, Express, etc.
+
+commands:
+  test: "npm test"           # Command to run tests
+  lint: "npm run lint"       # Command to run linter
+  build: "npm run build"     # Command to build project
+
+rules:
+  # Project-specific coding rules that AI agents must follow
+  - "use TypeScript strict mode"
+  - "follow the error pattern in src/utils/errors.ts"
+  - "use server actions not API routes"
+  - "prefer functional components over class components"
+  - "always add JSDoc comments for public APIs"
+  - "follow naming convention: PascalCase for components, camelCase for functions"
+
+boundaries:
+  neverTouch:
+    # Files and directories that should never be modified
+    - "node_modules/**"
+    - "*.lock"
+    - "package-lock.json"
+    - "yarn.lock"
+    - "dist/**"
+    - "build/**"
+    - ".git/**"
+    - "src/legacy/**"          # Legacy code that shouldn't be touched
+    - "config/production.yaml" # Production configs
+    - "scripts/deploy.sh"      # Deployment scripts

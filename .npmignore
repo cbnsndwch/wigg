@@ -1,0 +1,33 @@
+# Source files (only publish compiled dist/)
+src/
+tsconfig.json
+
+# Development files
+*.example.md
+*.example.yaml
+TESTING.md
+CONTRIBUTING.md
+config.example.yaml
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode/
+.idea/
+
+# Tests (when added)
+test/
+*.test.ts
+*.spec.ts
+
+# CI
+.github/
+
+# Docs (keep README and LICENSE)
+# README.md - keep
+# LICENSE - keep
+
+# Config examples
+.wigg/
