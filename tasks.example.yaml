@@ -1,0 +1,25 @@
+tasks:
+  - title: Add user authentication module
+    description: Implement JWT-based authentication with login and signup endpoints
+    completed: false
+    parallel_group: 1
+  
+  - title: Create dashboard with data visualization
+    description: Build a React dashboard with charts and graphs
+    completed: false
+    parallel_group: 2
+  
+  - title: Implement REST API endpoints
+    description: Create CRUD endpoints for user management
+    completed: false
+    parallel_group: 1
+  
+  - title: Write comprehensive documentation
+    description: Document all APIs and usage examples
+    completed: false
+    parallel_group: 3
+  
+  - title: Add unit tests
+    description: Write tests for authentication and API endpoints
+    completed: false
+    parallel_group: 3
