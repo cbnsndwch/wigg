@@ -12,7 +12,13 @@
     "start": "node dist/cli.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["cli", "ai", "coding-agent", "autonomous", "prd"],
+  "keywords": [
+    "cli",
+    "ai",
+    "coding-agent",
+    "autonomous",
+    "prd"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {
@@ -25,8 +31,7 @@
     "js-yaml": "^4.1.1",
     "ora": "^9.0.0",
     "simple-git": "^3.30.0",
-    "typescript": "^5.9.3",
-    "yaml": "^2.8.2"
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
     "@types/inquirer": "^9.0.9",

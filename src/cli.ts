@@ -54,7 +54,20 @@ program
   .option('--droid', 'Use Factory Droid engine')
   .action(async (task, options) => {
     try {
-      // Determine AI engine
+      // Determine AI engine with validation
+      const engineFlags = [
+        options.claude,
+        options.opencode,
+        options.cursor,
+        options.codex,
+        options.qwen,
+        options.droid
+      ].filter(Boolean);
+      
+      if (engineFlags.length > 1) {
+        logger.warning('Multiple AI engines specified. Using the last one provided.');
+      }
+      
       let engine: WiggOptions['engine'] = 'claude';
       if (options.opencode) engine = 'opencode';
       if (options.cursor) engine = 'cursor';

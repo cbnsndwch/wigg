@@ -56,7 +56,8 @@ export class ConfigManager {
   }
   
   createDefault(): ProjectConfig {
-    const packageJsonPath = path.join(path.dirname(path.dirname(this.configPath)), 'package.json');
+    const projectRoot = process.cwd();
+    const packageJsonPath = path.join(projectRoot, 'package.json');
     let projectName = 'my-project';
     let language: string | undefined;
     

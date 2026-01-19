@@ -118,8 +118,16 @@ export class TaskExecutor {
   private async runEngine(prompt: string): Promise<string> {
     const engineConfig = getEngineConfig(this.engine);
     
+    // Validate and sanitize prompt to prevent injection
+    if (!prompt || typeof prompt !== 'string') {
+      throw new Error('Invalid prompt');
+    }
+    
+    // Remove potentially dangerous characters
+    const sanitizedPrompt = prompt.replace(/[`$()]/g, '');
+    
     return new Promise((resolve, reject) => {
-      const args = [...engineConfig.args, prompt];
+      const args = [...engineConfig.args, sanitizedPrompt];
       const child = spawn(engineConfig.command, args, {
         stdio: ['inherit', 'pipe', 'pipe'],
       });
@@ -155,8 +163,12 @@ export class TaskExecutor {
   
   private async runCommand(command: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      const child = spawn(command, [], {
-        shell: true,
+      // Parse command and arguments to avoid shell injection
+      const parts = command.trim().split(/\s+/);
+      const cmd = parts[0];
+      const args = parts.slice(1);
+      
+      const child = spawn(cmd, args, {
         stdio: 'inherit',
       });
       

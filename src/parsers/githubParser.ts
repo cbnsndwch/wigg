@@ -10,11 +10,13 @@ export class GitHubParser {
   }
   
   async parseIssues(repo: string, label?: string): Promise<Task[]> {
-    const [owner, repoName] = repo.split('/');
-    
-    if (!owner || !repoName) {
+    // Validate repo format: must be exactly "owner/repo"
+    const parts = repo.split('/');
+    if (parts.length !== 2 || !parts[0] || !parts[1]) {
       throw new Error('Invalid GitHub repository format. Use: owner/repo');
     }
+    
+    const [owner, repoName] = parts;
     
     try {
       const { data: issues } = await this.octokit.issues.listForRepo({
