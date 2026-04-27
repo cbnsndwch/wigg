@@ -1,5 +1,11 @@
 # @cbnsndwch/wigg
 
+## 26.427.0
+
+### Minor Changes
+
+- Add colored console output for improved terminal readability and better streaming visualization.
+
 ## 26.426.4
 
 ### Patch Changes

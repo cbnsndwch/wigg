@@ -297,6 +297,22 @@ function stripAnsi(input: string): string {
     return input.replace(/\x1B\[[0-9;]*m/g, '');
 }
 
+// Simple color helpers
+const c = {
+    reset: '\x1b[0m',
+    dim: '\x1b[2m',
+    gray: '\x1b[90m',
+    blue: '\x1b[34m',
+    cyan: '\x1b[36m',
+    green: '\x1b[32m',
+    yellow: '\x1b[33m',
+    red: '\x1b[31m',
+    magenta: '\x1b[35m'
+};
+
+const clr = (color: string, text: string) =>
+    process.stdout.isTTY ? `${color}${text}${c.reset}` : text;
+
 // ============================================================================
 // User Prompt
 // ============================================================================
@@ -835,8 +851,9 @@ function createStreamJsonFormatter(
                     if (evt.subtype === 'init') {
                         const model = evt.model ?? '?';
                         const cwd = evt.cwd ?? '';
+                        const msg = `session started · model=${model}${cwd ? ` · cwd=${cwd}` : ''}`;
                         sink.write(
-                            `[system] session started · model=${model}${cwd ? ` · cwd=${cwd}` : ''}\n`
+                            `${clr(c.magenta, '[system]')} ${clr(c.gray, msg)}\n`
                         );
                     }
                     return;
@@ -860,7 +877,9 @@ function createStreamJsonFormatter(
                             const input = block.input
                                 ? summarizeToolInput(block.input)
                                 : '';
-                            sink.write(`[tool:${name}] ${input}\n`);
+                            sink.write(
+                                `${clr(c.cyan, `[tool:${name}]`)} ${clr(c.gray, input)}\n`
+                            );
                         } else if (
                             block.type === 'thinking' &&
                             typeof block.thinking === 'string'
@@ -869,7 +888,9 @@ function createStreamJsonFormatter(
                             const firstLine = block.thinking
                                 .split('\n', 1)[0]
                                 .slice(0, 200);
-                            sink.write(`[thinking] ${firstLine}\n`);
+                            sink.write(
+                                clr(c.gray, `[thinking] ${firstLine}`) + '\n'
+                            );
                         }
                     }
                     return;
@@ -887,10 +908,16 @@ function createStreamJsonFormatter(
                             const firstLine = resultText
                                 .split('\n', 1)[0]
                                 .slice(0, 160);
-                            const isError = block.is_error ? ' [error]' : '';
-                            sink.write(
-                                `[tool_result]${isError} ${firstLine}\n`
+                            const isError = block.is_error;
+                            const prefix = clr(
+                                isError ? c.red : c.green,
+                                '[tool_result]'
                             );
+                            const suffix = clr(
+                                isError ? c.red : c.gray,
+                                firstLine
+                            );
+                            sink.write(`${prefix} ${suffix}\n`);
                         }
                     }
                     return;
@@ -902,8 +929,9 @@ function createStreamJsonFormatter(
                         typeof evt.total_cost_usd === 'number'
                             ? `$${evt.total_cost_usd.toFixed(4)}`
                             : '?';
+                    const msg = `${formatDurationShort(ms)} · ${turns} turns · ${cost}`;
                     sink.write(
-                        `[result] ${formatDurationShort(ms)} · ${turns} turns · ${cost}\n`
+                        `${clr(c.magenta, '[result]')} ${clr(c.gray, msg)}\n`
                     );
                     return;
                 }
@@ -1700,7 +1728,18 @@ async function runLoop(options: CliOptions): Promise<void> {
             state.iteration < state.minIterations
                 ? ` (min: ${state.minIterations})`
                 : '';
-        console.log(`\n🔄 Iteration ${state.iteration}${iterInfo}${minInfo}`);
+        console.log(
+            clr(
+                c.magenta,
+                `\n🔄 Iteration ${state.iteration}${iterInfo}${minInfo}`
+            )
+        );
+        console.log(
+            clr(
+                c.dim,
+                '────────────────────────────────────────────────────────────────────'
+            )
+        );
         console.log('─'.repeat(68));
 
         const contextAtStart = loadContext();
@@ -1751,25 +1790,32 @@ async function runLoop(options: CliOptions): Promise<void> {
                 v => v.exitCode === 0
             );
 
-            console.log('\nIteration Summary');
+            console.log(clr(c.magenta, '\nIteration Summary'));
             console.log(
-                '────────────────────────────────────────────────────────────────────'
+                clr(
+                    c.dim,
+                    '────────────────────────────────────────────────────────────────────'
+                )
             );
-            console.log(`Iteration: ${state.iteration}`);
-            console.log(`Elapsed:   ${formatDurationShort(iterationDuration)}`);
-            console.log(`Exit code: ${exitCode}`);
+            console.log(`${clr(c.gray, 'Iteration:')} ${state.iteration}`);
             console.log(
-                `Completion promise: ${completionDetected ? 'detected' : 'not detected'}`
+                `${clr(c.gray, 'Elapsed:')}   ${formatDurationShort(iterationDuration)}`
             );
             console.log(
-                `Changes:   ${diff.filesChanged.length} files, +${diff.linesAdded}/-${diff.linesRemoved}`
+                `${clr(c.gray, 'Exit code:')} ${exitCode === 0 ? clr(c.green, '0') : clr(c.red, exitCode.toString())}`
+            );
+            console.log(
+                `${clr(c.gray, 'Completion promise:')} ${completionDetected ? clr(c.green, 'detected') : clr(c.yellow, 'not detected')}`
+            );
+            console.log(
+                `${clr(c.gray, 'Changes:')}   ${diff.filesChanged.length} files, +${diff.linesAdded}/-${diff.linesRemoved}`
             );
             if (verifications.length > 0) {
                 const passCount = verifications.filter(
                     v => v.exitCode === 0
                 ).length;
                 console.log(
-                    `Verify:    ${passCount}/${verifications.length} passed`
+                    `${clr(c.gray, 'Verify:')}    ${passCount}/${verifications.length} passed`
                 );
             }
 
@@ -1931,7 +1977,7 @@ async function runLoop(options: CliOptions): Promise<void> {
             // Task completion
             if (taskCompletionDetected && !completionDetected) {
                 console.log(
-                    `\n🔄 Task completion detected. Moving to next task...`
+                    `\n${clr(c.cyan, '🔄 Task completion detected. Moving to next task...')}`
                 );
             }
 
