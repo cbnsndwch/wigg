@@ -1,0 +1,36 @@
+{
+    "$schema": "./node_modules/oxfmt/configuration_schema.json",
+    "singleQuote": true,
+    "bracketSpacing": true,
+    "trailingComma": "none",
+    "printWidth": 80,
+    "tabWidth": 4,
+    "useTabs": false,
+    "endOfLine": "lf",
+    "semi": true,
+    "arrowParens": "avoid",
+    "curly": true,
+    "overrides": [
+        {
+            "files": [
+                "*.puml",
+                "*.yml",
+                "*.yaml"
+            ],
+            "options": {
+                "tabWidth": 2
+            }
+        }
+    ],
+    "ignorePatterns": [
+        ".editorconfig",
+        ".gitignore",
+        ".turbo",
+        ".vscode",
+        "assets",
+        "build",
+        "dist",
+        "docs",
+        "node_modules"
+    ]
+}

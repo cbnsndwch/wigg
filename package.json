@@ -1,0 +1,40 @@
+{
+    "name": "@cbnsndwch/wigg",
+    "description": "A pure TS Ralph Wiggum-like harness for NodeJS",
+    "version": "26.426.1",
+    "type": "module",
+    "license": "MIT",
+    "repository": "https://github.com/cbnsndwch/wigg",
+    "bin": {
+        "wigg": "tsx ./wigg.ts"
+    },
+    "files": [
+        "wigg.ts",
+        "prompts/"
+    ],
+    "scripts": {
+        "format": "oxfmt --write wigg.ts",
+        "format:check": "oxfmt --check wigg.ts",
+        "lint": "oxlint wigg.ts",
+        "lint:fix": "oxlint wigg.ts --fix",
+        "test": "vitest --run --passWithNoTests",
+        "test:watch": "vitest",
+        "changeset": "changeset",
+        "changeset:version": "changeset version",
+        "changeset:publish": "changeset publish",
+        "changeset:status": "changeset status --verbose",
+        "release": "pnpm lint && pnpm changeset:publish"
+    },
+    "dependencies": {
+        "tsx": "catalog:"
+    },
+    "devDependencies": {
+        "@changesets/cli": "catalog:",
+        "@types/node": "catalog:",
+        "npm-check-updates": "catalog:",
+        "oxc": "catalog:",
+        "oxfmt": "catalog:",
+        "oxlint": "catalog:"
+    },
+    "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319"
+}
