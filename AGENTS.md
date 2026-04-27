@@ -5,6 +5,8 @@ When publishing, ALWAYS use:
 
 **CRITICAL RULE:** NEVER use `npm publish` directly. This repository uses pnpm's `catalog:` feature for dependencies. `npm publish` does not understand `catalog:` and will publish the package with literal `"catalog:"` versions in `package.json`, completely breaking downstream installations. Only pnpm (`pnpm publish` or `changeset publish` under pnpm) can correctly replace the `catalog:` placeholders with real package versions before uploading to the registry.
 
+**TAGGING RULE:** We DO NOT use bare tags (e.g. `git tag v1.0.0`). Always use the Changesets CLI for tagging via `pnpm changeset tag` to ensure proper linkage and standard GitHub releases.
+
 *Note: Always use the changeset `publish` command (or `pnpm run changeset:publish`) when publishing releases, rather than manually tagging or running `npm publish` directly, to ensure GitHub releases and tags are created correctly by the changesets CLI.*
 
 Do not use `pnpm run publish` without `changeset` context if it's missing from `scripts`.
