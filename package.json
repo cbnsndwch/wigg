@@ -6,10 +6,11 @@
     "license": "MIT",
     "repository": "https://github.com/cbnsndwch/wigg",
     "bin": {
-        "wigg": "tsx ./wigg.ts"
+        "wigg": "bin/wigg.js"
     },
     "files": [
         "wigg.ts",
+        "bin/",
         "prompts/"
     ],
     "scripts": {
