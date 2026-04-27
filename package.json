@@ -1,7 +1,7 @@
 {
     "name": "@cbnsndwch/wigg",
     "description": "A pure TS Ralph Wiggum-like harness for NodeJS",
-    "version": "26.426.1",
+    "version": "26.426.2",
     "type": "module",
     "license": "MIT",
     "repository": "https://github.com/cbnsndwch/wigg",
