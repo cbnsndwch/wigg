@@ -5,6 +5,9 @@
     "type": "module",
     "license": "MIT",
     "repository": "https://github.com/cbnsndwch/wigg",
+    "publishConfig": {
+        "access": "public"
+    },
     "bin": {
         "wigg": "bin/wigg.js"
     },
