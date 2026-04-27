@@ -1,5 +1,11 @@
 # @cbnsndwch/wigg
 
+## 26.427.1
+
+### Patch Changes
+
+- Fix published package containing unresolved `catalog:` protocols in its `package.json` dependencies. We must enforce publishing via `pnpm publish` (via changesets) instead of `npm publish`, so that pnpm correctly replaces `catalog:` values with real package versions before uploading to the registry.
+
 ## 26.427.0
 
 ### Minor Changes
